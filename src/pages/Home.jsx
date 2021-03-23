@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 
 import "@gooddata/react-components/styles/css/main.css";
 
@@ -12,7 +12,7 @@ import ChartSection from '../components/ChartSection';
 // End Addition ultils 
 
 export default function Home({projectId, grossProfitMeasure, dateAttributeInMonths, dateAttribute}) {
-  const [year, setYear] = useState(2016);
+  const [year, ] = useState(2016);
   const [month, setMonth] = useState(1);
   
   const [startDate, setStartDate] = useState("2016-1-1");
@@ -24,13 +24,13 @@ export default function Home({projectId, grossProfitMeasure, dateAttributeInMont
     return Model.absoluteDateFilter(dateAttribute, startDate, endDate);
   }
   
-  const getMeasures = () => {
+  const getMeasures = useCallback(() => {
     return [
       Model.measure(grossProfitMeasure)
         .localIdentifier("m1")
         .alias("$ Gross Profit"),
     ];
-  }
+  }, [grossProfitMeasure]);
   
   const onMonthChange = async (monthValue) => {
     let lastDay = getLastday(monthValue-1, year);

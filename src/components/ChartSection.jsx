@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 
 import "@gooddata/react-components/styles/css/main.css";
@@ -13,22 +13,22 @@ const ChartSection = ({ projectId,
   const [measures, setMeasures] = useState(null);
   const [viewBy, setViewBy] = useState(null);
 
-  const getMeasures = () => {
+  const getMeasures = useCallback(() => {
     return [
       Model.measure(grossProfitMeasure)
         .localIdentifier("m1")
         .alias("$ Gross Profit"),
     ];
-  }
+  }, [grossProfitMeasure]);
 
-  const getViewBy = () => {
+  const getViewBy = useCallback(() => {
     return Model.attribute(dateAttributeInMonths).localIdentifier("a1");
-  }
+  }, [dateAttributeInMonths])
   
-  const getMeasuresRequest = async () => {
+  const getMeasuresRequest = useCallback(async () => {
     const ressult = await getMeasures();
     setMeasures(ressult);
-  }
+  }, []);
   
   useEffect(() => {
     setViewBy(getViewBy());
